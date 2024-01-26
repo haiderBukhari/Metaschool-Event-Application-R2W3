@@ -32,7 +32,7 @@ Welcome to the Metaschool Road to Web3 Cohort II - Event Management Project, My 
 
 ### Work Flow Diagram
 
-![11zon_1](https://github.com/haiderBukhari/Metaschool-Event-Application-R2W3/assets/85192296/13ce4c57-7297-4b68-a705-e9a52c0ccbf4)
+![11zon_1](https://github.com/haiderBukhari/Metaschool-Event-Application-R2W3/assets/85192296/d6a0080b-ec1a-4967-b3ee-4b58a57e8b47)
 
 
  ## Team Members

@@ -33,6 +33,7 @@ Welcome to the Metaschool Road to Web3 Cohort II - Event Management Project, My 
 ### Work Flow Diagram
 
 ![11zon_1](https://github.com/haiderBukhari/Metaschool-Event-Application-R2W3/assets/85192296/d6a0080b-ec1a-4967-b3ee-4b58a57e8b47)
+<<<<<<< HEAD
 
 
 ## Application Workflow Storyboard
@@ -97,6 +98,8 @@ messaging.
 1. ***Project Kick-off (Days 1-3)*:** *Team formation and project ideation*.
 2. ***Design Phase (Days 4-7)*:** *Discussed architecture of the project and finalize design concepts*.
 3. ***Development Sprint (Days 8-16)*:** *Implement core functionalities and componenets*.
+=======
+>>>>>>> ecb53ed5c145bdc1dd23d1511584ea933c19d164
 
 
  ## Team Members

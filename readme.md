@@ -33,7 +33,6 @@ Welcome to the Metaschool Road to Web3 Cohort II - Event Management Project, My 
 ### Work Flow Diagram
 
 ![11zon_1](https://github.com/haiderBukhari/Metaschool-Event-Application-R2W3/assets/85192296/d6a0080b-ec1a-4967-b3ee-4b58a57e8b47)
-<<<<<<< HEAD
 
 
 ## Application Workflow Storyboard
@@ -74,32 +73,6 @@ messaging.
 4.	<span style="text-decoration:underline">***Enhanced Ticketing Features:***</span> Add features like discount codes, group ticketing, waitlists, and seat selection to improve the ticketing experience.
 5.	<span style="text-decoration:underline">***Social Media Integration:***</span> Integrate with popular social media platforms to enable event sharing, RSVPs, and social interactions.
 6. <span style="text-decoration:underline">***Feedback and Review System:***</span> Implement a system for attendees to provide feedback and leave reviews for events they have attended.
-
-
-***RSVP***
-
-1. **Ticket Purchase:** Users gets tickets on the platform and receive ticket NFTs in their wallet. They can RSVP to events on the platform.
-2. Invited participants confirm event attendance by submitting RSVP response.
-3. Smart contract mints non-transferable NFT ticket to attendee wallet after verification.
-
-***Proof of Attendance***
-
-1. After event completion, attendance NFTs are submitted to claim certificates
-2. Smart contract verifies ticket validity, destroys NFT from wallet and issues certificate NFT to attendee
-
-***Touchpoints***
-
-- Frontend interacts with blockchain network through Web3 injected provider such as MetaMask and TrustWallet.
-- IPFS used for decentralized storage of event media assets
-- ERC-721 standard used for NFT generation
-
-### Milestone Breakdown
-
-1. ***Project Kick-off (Days 1-3)*:** *Team formation and project ideation*.
-2. ***Design Phase (Days 4-7)*:** *Discussed architecture of the project and finalize design concepts*.
-3. ***Development Sprint (Days 8-16)*:** *Implement core functionalities and componenets*.
-=======
->>>>>>> ecb53ed5c145bdc1dd23d1511584ea933c19d164
 
 
  ## Team Members

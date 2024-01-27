@@ -38,11 +38,11 @@ Welcome to the Metaschool Road to Web3 Cohort II - Event Management Project, My 
 
 ***🖥️ Frontend***
 
-1.***User Interface:*** Design an intuitive and user-friendly interface for event organizers and attendees to interact with.
-2.***Event Creation:*** Develop a form or wizard-like interface for event organizers to create event pages, add event details, set ticket prices, and customize event pages.
-3.***Ticketing System:*** Design a ticketing system for attendees to purchase tickets securely and easily.
-4.***Event Search and Filtering:*** Implement search and filtering options to help users find relevant events based on location, category, date, etc.
-5.***Event Management:*** Build an interface for event organizers to manage their events, track registrations, and make updates to event details.
+1. ***User Interface:*** Design an intuitive and user-friendly interface for event organizers and attendees to interact with.
+2. ***Event Creation:*** Develop a form or wizard-like interface for event organizers to create event pages, add event details, set ticket prices, and customize event pages.
+3. ***Ticketing System:*** Design a ticketing system for attendees to purchase tickets securely and easily.
+4. ***Event Search and Filtering:*** Implement search and filtering options to help users find relevant events based on location, category, date, etc.
+5. ***Event Management:*** Build an interface for event organizers to manage their events, track registrations, and make updates to event details.
 6. ***Analytics and Reporting:*** Provide event organizers with analytics and reporting features to track event performance, ticket sales, and attendee engagement.
 
 ***📜 Smart contract requirements***

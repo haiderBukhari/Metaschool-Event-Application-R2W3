@@ -4,38 +4,28 @@ pragma solidity ^0.8.9;
 contract DeTicket {
     // event information
     struct Event {
+        address eventOwner;
         string name;
         string description;
         address[] members;
         uint ticketLimit;
     }
 
-    // member information
-
     // record of all events
     Event[] public allEvents;
 
     // track events by creator
-    mapping(address => Event[]) public eventsByAddress;
+    mapping (address => Event[]) public eventsByAddress;
 
     // create an event
-    function createEvent(
-        string memory _name,
-        string memory _description,
-        uint _ticketLimit
-    ) public {
+    function createEvent(string memory _name, string memory _description, uint _ticketLimit) public {
         // store the new event temporarily
-        Event memory newEvent = Event(
-            _name,
-            _description,
-            new address[](0),
-            _ticketLimit
-        );
+        Event memory newEvent = Event(msg.sender, _name, _description, new address[](0), _ticketLimit);
 
         // push the event
         allEvents.push(newEvent);
         eventsByAddress[msg.sender].push(newEvent);
-    }
+    } 
 
     // get all events
     function getAllEvents() public view returns (Event[] memory) {
@@ -43,35 +33,27 @@ contract DeTicket {
     }
 
     // register for an event
-    function registerForEvent(address _owner, uint _idx) public payable {
-        require(
-            msg.sender != _owner,
-            "The organizer cannot register to the event"
-        );
-        require(_idx < eventsByAddress[_owner].length, "Invalid index");
+    function registerForEvent(address _owner, uint _idx) public payable onlyParticipant(_owner) {
+        require(_idx < allEvents.length, "Invalid event");
 
-        // store the selected event temporarily
-        Event storage selectedEvent = eventsByAddress[_owner][_idx];
+        // get the event
+        Event storage selectedEvent = allEvents[_idx];
+        Event storage eventByAddress = eventsByAddress[_owner][_idx];
 
-        // check if the amount is exactly 0.01 ether
+        // // check for ticket availability
+        require(selectedEvent.members.length < selectedEvent.ticketLimit, "Not enough seats available.");
+        selectedEvent.members.push(msg.sender);
+        eventByAddress.members.push(msg.sender);
+
+        // // check if the amount is exactly 0.01 ether
         require(msg.value == 0.01 ether, "Please pay 0.01 ether");
         (bool sent, ) = _owner.call{value: msg.value}("");
         require(sent, "Registration Failed");
-
-        // check for ticket availability
-        require(
-            selectedEvent.members.length < selectedEvent.ticketLimit,
-            "Not enough tickets"
-        );
-        selectedEvent.members.push(msg.sender);
     }
 
-    // get the member addresses of a specific event
-    function getEventMembers(
-        address _owner,
-        uint _idx
-    ) public view returns (address[] memory) {
-        Event storage selectedEvent = eventsByAddress[_owner][_idx];
-        return selectedEvent.members;
+    // modifiers
+    modifier onlyParticipant(address _owner) {
+        require(msg.sender != _owner, "The organizer cannot register for the event.");
+        _;
     }
 }

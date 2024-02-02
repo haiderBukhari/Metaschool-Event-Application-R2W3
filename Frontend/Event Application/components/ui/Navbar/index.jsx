@@ -13,8 +13,8 @@ const Navbar = () => {
         // { title: "Features", path: "#features" },
         // { title: "Our toolkit", path: "#toolkit" },
         // { title: "Testimonials", path: "#testimonials" },
-        { title: "Create Event", path: "#testimonials" },
-        { title: "View Events", path: "#testimonials" },
+        { title: "Create Event", path: "/events/create" },
+        { title: "View Events", path: "/events/view" },
         // { title: "Testimonials", path: "#testimonials" },
     ]
 
@@ -75,7 +75,7 @@ const Navbar = () => {
                             }
                             <li>
                                 <NavLink
-                                    href="/get-started"
+                                    href="/login"
                                     className="py-2 px-4 text-center rounded-lg duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
                                 >
                                     Login

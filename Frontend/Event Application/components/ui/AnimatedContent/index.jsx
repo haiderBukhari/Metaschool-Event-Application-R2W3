@@ -1,4 +1,5 @@
 import { CldVideoPlayer } from "next-cloudinary"
+import NavLink from "../NavLink";
 
 const AnimatedContent = () => {
     return (
@@ -12,12 +13,12 @@ const AnimatedContent = () => {
                         Event organizers have special benefits. If an event organizer's payment for their organized events reaches 10 ETH, they will be given a free pass to attend an event.
                     </p>
                     <div className="flex items-center justify-center gap-x-3 font-medium text-sm">
-                        <a
+                        <NavLink
                             className="py-2.5 px-4 text-center rounded-lg duration-150 text-white text-bold text-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition mb-5 mt-5"
-                            href="/"
+                            href="/events/create"
                         >
                             Create an event
-                        </a>
+                        </NavLink>
                     </div>
                     <CldVideoPlayer
                         id="db3mrysudcrwnqwtkl4w"

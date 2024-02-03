@@ -17,7 +17,8 @@ const Login = () => {
     }
 
     const changeAccount = (AccountAddress) => {
-        calculateBalance(AccountAddress);
+        setWalletAddress(AccountAddress)
+        calculateBalance(AccountAddress.toString());
     }
     const calculateBalance = (AccountAddress) => {
         window.ethereum.request({
@@ -26,8 +27,12 @@ const Login = () => {
         }).then(result => {
             setWalletBalance(ethers.formatEther(result));
         })
-
     }
+    if (typeof window !== 'undefined') {
+        // Code that relies on the window object
+        window.ethereum.on('accountChanged', changeAccount);
+    }
+
     return (
         <div className='flex justify-center items-center min-h-[70vh]'>
             <div className="mx-auto container flex h-screen w-full flex-col items-center justify-center">

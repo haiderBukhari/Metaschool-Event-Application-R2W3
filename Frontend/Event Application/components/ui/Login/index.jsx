@@ -2,10 +2,17 @@ import React, { useState } from 'react'
 import eventhubLogo from "../../../public/logo.png"
 import Image from "next/image"
 import { ethers } from "ethers"
+import { useSelector, useDispatch } from "react-redux"
+import { setUser } from 'components/GolabalReducers/Features/UserCredentials'
+import { useRouter } from 'next/router';
 
 const Login = () => {
     const [walletAddress, setWalletAddress] = useState(null);
     const [walletBalance, setWalletBalance] = useState(null);
+    const dispatch = useDispatch();
+    const Navigate = useRouter();
+    const userCredentials = useSelector(state=>state.userCredentials);
+    console.log(userCredentials)
     const connectWallet = () => {
         if (window.ethereum) {
             window.ethereum.request({ method: "eth_requestAccounts" }).then(result => {
@@ -19,12 +26,17 @@ const Login = () => {
     const changeAccount = (AccountAddress) => {
         setWalletAddress(AccountAddress)
         calculateBalance(AccountAddress.toString());
+        Navigate.push("/")
     }
     const calculateBalance = (AccountAddress) => {
         window.ethereum.request({
             method: "eth_getBalance",
             params: [AccountAddress, "latest"]
         }).then(result => {
+            dispatch(setUser({
+                address: AccountAddress,
+                availableBalance: ethers.formatEther(result)
+            }));
             setWalletBalance(ethers.formatEther(result));
         })
     }

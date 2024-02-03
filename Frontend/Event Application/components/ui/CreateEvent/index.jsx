@@ -214,18 +214,6 @@ const CreateEvent = () => {
               />
             </div>
             <div className="flex justify-center items-center mt-5">
-              <label className="mr-2 ">Total Seats: </label>
-              <input
-                onChange={(e) => {
-                  setTicketLimit(e.target.value);
-                }}
-                style={{ border: "1px solid #ccc" }}
-                className="w-[100%] p-2 flex-1"
-                type="text"
-                placeholder="seats"
-              />
-            </div>
-            <div className="flex justify-center items-center mt-5">
               <label className="mr-2 "> Meeting Link: </label>
               <input
                 onChange={(e) => {

@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-contract DeTicket {
+contract EventHub {
     // event information
     struct Event {
         address eventOwner;
-        string name;
+        string eventImage;
+        string title;
         string description;
+        string date;
+        string time;
         address[] members;
         uint ticketLimit;
     }
@@ -18,9 +21,9 @@ contract DeTicket {
     mapping (address => Event[]) public eventsByAddress;
 
     // create an event
-    function createEvent(string memory _name, string memory _description, uint _ticketLimit) public {
+    function createEvent(string memory _eventImage, string memory _title, string memory _description, string memory _date, string memory _time, uint _ticketLimit) public {
         // store the new event temporarily
-        Event memory newEvent = Event(msg.sender, _name, _description, new address[](0), _ticketLimit);
+        Event memory newEvent = Event(msg.sender, _eventImage, _title, _description, _date, _time, new address[](0), _ticketLimit);
 
         // push the event
         allEvents.push(newEvent);

@@ -13,16 +13,16 @@ const CTA = () => {
                     </div>
                     <div className="max-w-xl mt-6 md:mt-0 lg:max-w-2xl">
                         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                            Create Successful Business Models with Our IT Solutions
+                            Unlocking Opportunities: Experience Limitless Knowledge at Our Free Event Hub
                         </h2>
                         <p className="mt-3 text-gray-600">
-                            Blinder, a software development company, helps to digitize businesses by focusing on client’s business challenges, needs. We value close transparent cooperation and encourage our clients to participate actively in the project development life cycle.
+                        Unleash the Power of Events with Our Interactive Platform! Join us as we revolutionize event creation and organization, empowering you to shape unforgettable experiences. Together, let's bring your vision to life and engage your audience like never before
                         </p>
                         <NavLink
-                            href="/get-started"
-                            className="inline-block mt-4 font-medium text-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800"
+                            href="/events/view"
+                            className="inline-block mt-4 font-medium text-white bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition rounded-3xl text-bold text-base"
                         >
-                            Get started
+                            Attend Ongoing Events
                         </NavLink>
                     </div>
                 </div>

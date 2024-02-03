@@ -8,7 +8,7 @@ const Tiptap = ({description, setDescription}) => {
     ],
     editorProps: {
         attributes: {
-            class: 'rounded-md border min-h-[200px] border-input bg-background px-3 py-2 mt-10',
+            class: 'rounded-md border min-h-[260px] border-input bg-background px-3 py-2 mt-10',
         }
     },
     onUpdate({editor}){

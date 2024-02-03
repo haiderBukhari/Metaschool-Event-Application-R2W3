@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from "../Input";
 import eventsbackground from "../../../public/eventsbackground.png";
 import Image from 'next/image';
 import { Button } from "@/components/ui/button"
 import Tiptap from './Tiptap'
 import { X, MoveRight } from 'lucide-react';
+import {useSelector} from "react-redux"
+import { useRouter } from 'next/router';
 
 const CreateEvent = () => {
+    const [address, setAddress] = useState(useSelector(state=> state.userCredentials));
     const [eventImage, setEventImage] = useState(null);
     const [date, setDate] = useState(null)
     const [time, setTime] = useState(null)
     const [title, setTitle] = useState(null)
     const [description, setDescription] = useState(null);
     const [eventCost, setEventCost] = useState(null);
+    const [meetUrl, setMeetUrl] = useState(null);
+    const Navigate = useRouter();
 
+    useEffect(() => {
+        if(!address.address){
+            Navigate.push('/login')
+        }
+    }, [])
 
     const submitEvent = () => {
         const data = {
@@ -55,7 +65,7 @@ const CreateEvent = () => {
             <div className='rounded-lg shadow-md min-h-[600px] max-w-[800px] m-auto p-5 flex flex-row flex-wrap justify-between bg-white'>
                 <div className='max-w-[400px] w-[100%] mr-3 mb-5'>
                 <div style={{border: "1px solid #ccc", borderRadius: "30px", maxWidth: "250px", textAlign: "center", padding: "8px", margin: "20px 0"}}>
-                    <span  className="font-bold mr-2">Address: </span> 0ax28763...29902
+                    <span  className="font-bold mr-2">Address: </span> {address?.address?.substring(0, 8)}......{address?.address?.substring(address?.address?.length - 4)}
                 </div>
                     <Input onChange={(e)=>{setTitle(e.target.value)}} className='font-bold text-xl text-gray-500' style={{ border: "1px solid #ccc" }} placeholder="Event Name" type="text" />
                     <div className="flex justify-center items-center mt-7">
@@ -99,6 +109,10 @@ const CreateEvent = () => {
                     <div className="flex justify-center items-center mt-5">
                         <label className="mr-2 "> Ticket Fee (eth): </label>
                         <input onChange={(e)=>{setEventCost(e.target.value)}} style={{ border: "1px solid #ccc" }} className="w-[100%] p-2 flex-1" type="number" placeholder="cost" />
+                    </div>
+                    <div className="flex justify-center items-center mt-5">
+                        <label className="mr-2 "> Meeting Link: </label>
+                        <input onChange={(e)=>{setMeetUrl(e.target.value)}} style={{ border: "1px solid #ccc" }} className="w-[100%] p-2 flex-1" type="text" placeholder="meeting url" />
                     </div>
                     <Button disabled={!eventImage || !title || !description || !date || !title || !eventCost} onClick={submitEvent} style={{backgroundColor: `${(!eventImage || !title || !description || !date || !title || !eventCost) ? "rgba(51, 53, 55, 0.6)" : "rgb(51, 53, 55)"}`, width: "100%", borderRadius: "10px", color: "#ffffff", padding: "10px 0", margin: "20px 0", bottom: "0"}} className="">Create Event <MoveRight /></Button>
                     </div>

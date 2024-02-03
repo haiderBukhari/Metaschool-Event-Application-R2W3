@@ -14,13 +14,13 @@ const Hero = () => (
                 <div className="flex items-center justify-center gap-x-3 font-medium text-sm">
                     <NavLink
                         href="/events/view"
-                        className="py-2.5 px-4 text-center rounded-xl duration-150 text-white text-bold text-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                        className="py-2.5 px-4 text-center rounded-3xl duration-150 text-white text-bold text-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
                     >
                         View Events
                     </NavLink>
                     <NavLink
                         href="/events/create"
-                        className="py-2.5 px-4 text-center rounded-xl duration-150 text-white text-bold text-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                        className="py-2.5 px-4 text-center rounded-3xl duration-150 text-white text-bold text-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
                         scroll={false}
                     >
                         Organize Events

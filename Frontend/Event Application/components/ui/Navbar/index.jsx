@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Brand from '../Brand'
 import NavLink from '../NavLink'
-import {useSelector, useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { removeUser } from 'components/GolabalReducers/Features/UserCredentials'
 
 const Navbar = () => {
@@ -70,22 +70,32 @@ const Navbar = () => {
                                     )
                                 })
                             }
+                            {
+                                useSelector(state => state.userCredentials).address && <li className="duration-150 hover:text-gray-900">
+                                    <Link
+                                        href='/dashboard'
+                                        className="block"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                </li>
+                            }
                             <li>
                                 {
-                                    useSelector(state=> state.userCredentials).address ? (<NavLink
-                                    onClick={() => {
-                                        dispatch(removeUser());
-                                    }}
+                                    useSelector(state => state.userCredentials).address ? (<NavLink
+                                        onClick={() => {
+                                            dispatch(removeUser());
+                                        }}
                                         href="/"
                                         className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
                                     >
                                         Logout
                                     </NavLink>) : (<NavLink
-                                    href="/login"
-                                    className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
-                                >
-                                    Login
-                                </NavLink>)
+                                        href="/login"
+                                        className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                                    >
+                                        Login
+                                    </NavLink>)
                                 }
                             </li>
                         </ul>

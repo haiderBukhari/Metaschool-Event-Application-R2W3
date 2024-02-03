@@ -114,7 +114,7 @@ const CreateEvent = () => {
                         <label className="mr-2 "> Meeting Link: </label>
                         <input onChange={(e)=>{setMeetUrl(e.target.value)}} style={{ border: "1px solid #ccc" }} className="w-[100%] p-2 flex-1" type="text" placeholder="meeting url" />
                     </div>
-                    <Button disabled={!eventImage || !title || !description || !date || !title || !eventCost} onClick={submitEvent} style={{backgroundColor: `${(!eventImage || !title || !description || !date || !title || !eventCost) ? "rgba(51, 53, 55, 0.6)" : "rgb(51, 53, 55)"}`, width: "100%", borderRadius: "10px", color: "#ffffff", padding: "10px 0", margin: "20px 0", bottom: "0"}} className="">Create Event <MoveRight /></Button>
+                    <Button disabled={!eventImage || !title || !description || !date || !title || !eventCost || !meetUrl} onClick={submitEvent} style={{backgroundColor: `${(!eventImage || !title || !description || !date || !title || !eventCost || !meetUrl) ? "rgba(51, 53, 55, 0.6)" : "rgb(51, 53, 55)"}`, width: "100%", borderRadius: "10px", color: "#ffffff", padding: "10px 0", margin: "20px 0", bottom: "0"}} className="">Create Event <MoveRight /></Button>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 import React from 'react'
+import CreateEvent from '../../../components/ui/CreateEvent'
 
 const index = () => {
   return (
     <div>
-      Hiii creating an event
+      <CreateEvent />
     </div>
   )
 }

@@ -10,6 +10,7 @@ contract EventHub {
         string description;
         string date;
         string time;
+        uint eventCost;
         address[] members;
         uint ticketLimit;
     }
@@ -21,9 +22,9 @@ contract EventHub {
     mapping (address => Event[]) public eventsByAddress;
 
     // create an event
-    function createEvent(string memory _eventImage, string memory _title, string memory _description, string memory _date, string memory _time, uint _ticketLimit) public {
+    function createEvent(string memory _eventImage, string memory _title, string memory _description, string memory _date, string memory _time, uint _cost, uint _ticketLimit) public {
         // store the new event temporarily
-        Event memory newEvent = Event(msg.sender, _eventImage, _title, _description, _date, _time, new address[](0), _ticketLimit);
+        Event memory newEvent = Event(msg.sender, _eventImage, _title, _description, _date, _time, _cost, new address[](0), _ticketLimit);
 
         // push the event
         allEvents.push(newEvent);
@@ -36,7 +37,7 @@ contract EventHub {
     }
 
     // register for an event
-    function registerForEvent(address _owner, uint _idx) public payable onlyParticipant(_owner) {
+    function registerForEvent(address payable _owner, uint _cost, uint _idx) public payable onlyParticipant(_owner) {
         require(_idx < allEvents.length, "Invalid event");
 
         // get the event
@@ -45,13 +46,15 @@ contract EventHub {
 
         // // check for ticket availability
         require(selectedEvent.members.length < selectedEvent.ticketLimit, "Not enough seats available.");
-        selectedEvent.members.push(msg.sender);
-        eventByAddress.members.push(msg.sender);
 
-        // // check if the amount is exactly 0.01 ether
-        require(msg.value == 0.01 ether, "Please pay 0.01 ether");
+        // // check if the amount is correct
+        require(msg.value == _cost, "Please pay the right amount of ether");
         (bool sent, ) = _owner.call{value: msg.value}("");
         require(sent, "Registration Failed");
+
+        // push the participant after successful payment
+        selectedEvent.members.push(msg.sender);
+        eventByAddress.members.push(msg.sender);
     }
 
     // modifiers

@@ -22,7 +22,6 @@ const CreateEvent = () => {
   const [eventCost, setEventCost] = useState(null);
   const [meetUrl, setMeetUrl] = useState(null);
   const [ticketLimit, setTicketLimit] = useState(null);
-  const [events, setEvents] = useState([]);
   const Navigate = useRouter();
   const [signer, setSigner] = useState(null);
   const [provider, setProvider] = useState(null);
@@ -37,27 +36,6 @@ const CreateEvent = () => {
 
   // contract information
   const contractAddress = "0x02f686C065c73df0942DD6104f422Ea3d4f125CC";
-
-  const updateEthers = async () => {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    setProvider(provider);
-
-    const signer = await provider.getSigner();
-    setSigner(signer);
-
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    setContract(contract);
-  };
-
-  const getAllEvents = async () => {
-    try {
-      const data = await contract.getAllEvents();
-      setEvents(data);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const submitEvent = async () => {
     try {
@@ -113,7 +91,6 @@ const CreateEvent = () => {
       className="max-w-screen min-h-screen py-10 overflow-hidden"
       style={{ backgroundColor: "#f4f5f6" }}
     >
-      <button onClick={getAllEvents}>Get events</button>
       <div className="max-w-2xl mx-auto space-y-3 sm:text-center mb-5">
         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
           Unleash Extraordinary Events

@@ -37,6 +37,17 @@ const CreateEvent = () => {
   // contract information
   const contractAddress = "0x02f686C065c73df0942DD6104f422Ea3d4f125CC";
 
+  const updateEthers = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    setProvider(provider);
+
+    const signer = await provider.getSigner();
+    setSigner(signer);
+
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    setContract(contract);
+  };
+
   const submitEvent = async () => {
     try {
       const data = {

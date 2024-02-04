@@ -18,7 +18,7 @@ const Login = () => {
   const userCredentials = useSelector((state) => state.userCredentials);
   console.log(userCredentials);
 
-  const contractAddress = "0xdac33924DB6069D4b6F1b8539A1cA70a16F16C31";
+  const contractAddress = "0x02f686C065c73df0942DD6104f422Ea3d4f125CC";
 
   const connectWallet = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {

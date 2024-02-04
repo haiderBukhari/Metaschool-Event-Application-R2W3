@@ -5,30 +5,46 @@ import { ethers } from "ethers";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "components/GolabalReducers/Features/UserCredentials";
 import { useRouter } from "next/router";
+import contractABI from "../../../artifacts/contractABI.json";
 
 const Login = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [walletBalance, setWalletBalance] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
   const dispatch = useDispatch();
   const Navigate = useRouter();
   const userCredentials = useSelector((state) => state.userCredentials);
   console.log(userCredentials);
+
+  const contractAddress = "0xdac33924DB6069D4b6F1b8539A1cA70a16F16C31";
+
   const connectWallet = () => {
-    if (window.ethereum) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
           changeAccount(result[0]);
+        })
+        .catch((error) => {
+          console.error(error.message);
         });
     } else {
-      alert("MetaMask not installed");
+      console.log("Need to install MetaMask");
     }
   };
 
   const changeAccount = (AccountAddress) => {
-    setWalletAddress(AccountAddress);
     calculateBalance(AccountAddress.toString());
+    setWalletAddress(AccountAddress);
+    updateEthers();
     Navigate.push("/");
+  };
+
+  const chainChangedHandler = () => {
+    // reload the page to avoid any errors with chain change mid use of application
+    window.location.reload();
   };
   const calculateBalance = (AccountAddress) => {
     window.ethereum
@@ -49,7 +65,19 @@ const Login = () => {
   if (typeof window !== "undefined") {
     // Code that relies on the window object
     window.ethereum.on("accountChanged", changeAccount);
+    window.ethereum.on("chainChanged", chainChangedHandler);
   }
+
+  const updateEthers = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    setProvider(provider);
+
+    const signer = await provider.getSigner();
+    setSigner(signer);
+
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    setContract(contract);
+  };
 
   return (
     <div className="flex justify-center items-center min-h-[70vh]">

@@ -11,6 +11,7 @@ contract EventHub {
         string date;
         string time;
         uint eventCost;
+        string meetUrl;
         address[] members;
         uint ticketLimit;
     }
@@ -22,9 +23,9 @@ contract EventHub {
     mapping (address => Event[]) public eventsByAddress;
 
     // create an event
-    function createEvent(string memory _eventImage, string memory _title, string memory _description, string memory _date, string memory _time, uint _cost, uint _ticketLimit) public {
+    function createEvent(string memory _eventImage, string memory _title, string memory _description, string memory _date, string memory _time, uint _eventCost, string memory _meetUrl, uint _ticketLimit) public {
         // store the new event temporarily
-        Event memory newEvent = Event(msg.sender, _eventImage, _title, _description, _date, _time, _cost, new address[](0), _ticketLimit);
+        Event memory newEvent = Event(msg.sender, _eventImage, _title, _description, _date, _time, _eventCost, _meetUrl, new address[](0), _ticketLimit);
 
         // push the event
         allEvents.push(newEvent);

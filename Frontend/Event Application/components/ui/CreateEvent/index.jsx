@@ -7,8 +7,8 @@ import Tiptap from "./Tiptap";
 import { X, MoveRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { ethers } from "ethers";
 import contractABI from "../../../artifacts/contractABI.json";
+import { ethers } from "ethers";
 
 const CreateEvent = () => {
   const [address, setAddress] = useState(
@@ -22,17 +22,42 @@ const CreateEvent = () => {
   const [eventCost, setEventCost] = useState(null);
   const [meetUrl, setMeetUrl] = useState(null);
   const [ticketLimit, setTicketLimit] = useState(null);
+  const [events, setEvents] = useState([]);
   const Navigate = useRouter();
+  const [signer, setSigner] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
 
   useEffect(() => {
     if (!address.address) {
       Navigate.push("/login");
     }
+    updateEthers();
   }, []);
 
   // contract information
-  const contractAddress = "0x737d8e139852d04e408F1DC4e415AFc335011273";
-  const contract = new ethers.Contract(contractAddress, contractABI, address);
+  const contractAddress = "0xdac33924DB6069D4b6F1b8539A1cA70a16F16C31";
+
+  const updateEthers = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    setProvider(provider);
+
+    const signer = await provider.getSigner();
+    setSigner(signer);
+
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    setContract(contract);
+  };
+
+  const getAllEvents = async () => {
+    try {
+      const data = await contract.getAllEvents();
+      setEvents(data);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const submitEvent = async () => {
     try {
@@ -49,22 +74,23 @@ const CreateEvent = () => {
       console.log(data);
 
       // Ensure the wallet is connected
-      // if (!address || !address.isConnected()) {
-      //   console.error("Wallet not connected");
-      //   return;
-      // }
+      if (!address) {
+        console.error("Wallet not connected");
+        return;
+      }
 
-      // const tx = await contract.createEvent(
-      //   data.eventImage,
-      //   data.title,
-      //   data.description,
-      //   data.date,
-      //   data.time,
-      //   data.eventCost,
-      //   data.meetUrl,
-      //   data.ticketLimit
-      // );
-      // await tx.wait();
+      const tx = await contract.createEvent(
+        data.eventImage,
+        data.title,
+        data.description,
+        data.date,
+        data.time,
+        data.eventCost,
+        data.meetUrl,
+        data.ticketLimit
+      );
+      await tx.wait();
+      alert("Event creation successful");
     } catch (err) {
       console.error(err);
     }
@@ -89,6 +115,7 @@ const CreateEvent = () => {
       className="max-w-screen min-h-screen py-10 overflow-hidden"
       style={{ backgroundColor: "#f4f5f6" }}
     >
+      <button onClick={getAllEvents}>Get events</button>
       <div className="max-w-2xl mx-auto space-y-3 sm:text-center mb-5">
         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
           Unleash Extraordinary Events
@@ -214,6 +241,18 @@ const CreateEvent = () => {
               />
             </div>
             <div className="flex justify-center items-center mt-5">
+              <label className="mr-2 "> Total Seats: </label>
+              <input
+                onChange={(e) => {
+                  setTicketLimit(e.target.value);
+                }}
+                style={{ border: "1px solid #ccc" }}
+                className="w-[100%] p-2 flex-1"
+                type="text"
+                placeholder="seats"
+              />
+            </div>
+            <div className="flex justify-center items-center mt-5">
               <label className="mr-2 "> Meeting Link: </label>
               <input
                 onChange={(e) => {
@@ -232,7 +271,8 @@ const CreateEvent = () => {
                 !description ||
                 !date ||
                 !title ||
-                !eventCost
+                !eventCost ||
+                !ticketLimit
               }
               onClick={submitEvent}
               style={{
@@ -242,7 +282,8 @@ const CreateEvent = () => {
                   !description ||
                   !date ||
                   !title ||
-                  !eventCost
+                  !eventCost ||
+                  !ticketLimit
                     ? "rgba(51, 53, 55, 0.6)"
                     : "rgb(51, 53, 55)"
                 }`,

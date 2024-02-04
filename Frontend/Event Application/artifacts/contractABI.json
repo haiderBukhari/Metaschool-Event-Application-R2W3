@@ -26,6 +26,11 @@
       },
       {
         "internalType": "string",
+        "name": "eventImage",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "date",
         "type": "string"
       },
@@ -63,6 +68,11 @@
       {
         "internalType": "string",
         "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_eventImage",
         "type": "string"
       },
       {
@@ -128,6 +138,11 @@
       },
       {
         "internalType": "string",
+        "name": "eventImage",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "date",
         "type": "string"
       },
@@ -174,6 +189,11 @@
           {
             "internalType": "string",
             "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "eventImage",
             "type": "string"
           },
           {

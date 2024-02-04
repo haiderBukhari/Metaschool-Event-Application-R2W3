@@ -11,7 +11,7 @@ const TimeLine = () => {
   const [allEvents, setAllEvents] = useState([]);
 
   // contract information
-  const contractAddress = "0x02f686C065c73df0942DD6104f422Ea3d4f125CC";
+  const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
 
   useEffect(() => {
     const updateEthers = async () => {

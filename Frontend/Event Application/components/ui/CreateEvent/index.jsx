@@ -32,11 +32,11 @@ const CreateEvent = () => {
     if (!address.address) {
       Navigate.push("/login");
     }
-    // updateEthers();
+    updateEthers();
   }, []);
 
   // contract information
-  const contractAddress = "0x02f686C065c73df0942DD6104f422Ea3d4f125CC";
+  const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
 
   const updateEthers = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -61,19 +61,27 @@ const CreateEvent = () => {
         meetUrl,
         ticketLimit,
       };
+      console.log(data);
 
-      axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url`, {
-        image: eventImage
-      }, {
-        headers: {
-          "Content-Type": "application/json", 
-          "Accept": "application/json"
-        }
-      }).then((res) => {
-        data.eventImage = res.data.data.shortenedString;  //Here it is updating the image string just a sequence of string witj 10 characters in it... like 1as82jjdj8
-      }).catch((err) => {
-        console.log(err);
-      })
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url`,
+          {
+            image: eventImage,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          data.eventImage = res.data.data.shortenedString; //Here it is updating the image string just a sequence of string witj 10 characters in it... like 1as82jjdj8
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       // Ensure the wallet is connected
       if (!address) {
@@ -84,6 +92,7 @@ const CreateEvent = () => {
       const tx = await contract.createEvent(
         data.title,
         data.description,
+        data.eventImage,
         data.date,
         data.time,
         data.eventCost,
@@ -97,52 +106,51 @@ const CreateEvent = () => {
     }
   };
 
-
   const ImageUpload = (event) => {
     const file = event.target.files[0];
-  
+
     if (file) {
       const reader = new FileReader();
-  
+
       reader.onloadend = () => {
         const img = new Image();
-  
+
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
           const maxWidth = 300; // Set your desired maximum width
           const maxHeight = 150; // Set your desired maximum height
-  
+
           let width = img.width;
           let height = img.height;
-  
+
           // Resize the image if necessary
           if (width > maxWidth || height > maxHeight) {
             if (width > maxWidth) {
               height *= maxWidth / width;
               width = maxWidth;
             }
-  
+
             if (height > maxHeight) {
               width *= maxHeight / height;
               height = maxHeight;
             }
           }
-  
+
           canvas.width = width;
           canvas.height = height;
-  
+
           ctx.drawImage(img, 0, 0, width, height);
-  
+
           // Get the compressed image as a base64 string
           const compressedBase64 = canvas.toDataURL("image/jpeg", 0.3); // Adjust the quality as needed
-  
+
           setEventImage(compressedBase64);
         };
-  
+
         img.src = reader.result;
       };
-  
+
       reader.readAsDataURL(file);
     }
   };

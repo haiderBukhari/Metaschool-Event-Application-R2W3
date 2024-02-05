@@ -52,16 +52,18 @@ const CreateEvent = () => {
 
   const submitEvent = async () => {
     try {
+      let convertedCost = (parseFloat(eventCost) * (1 * 10 ** 18)).toString();
       const data = {
         title,
         description,
         eventImage,
         date,
         time,
-        eventCost,
+        convertedCost,
         meetUrl,
         ticketLimit,
       };
+      console.log(data);
 
       axios
         .post(
@@ -91,7 +93,7 @@ const CreateEvent = () => {
             data.eventImage,
             data.date,
             data.time,
-            data.eventCost,
+            data.convertedCost,
             data.meetUrl,
             data.ticketLimit
           );
@@ -102,7 +104,6 @@ const CreateEvent = () => {
         .catch((err) => {
           console.log(err);
         });
-
     } catch (err) {
       console.error(err);
     }
@@ -240,7 +241,7 @@ const CreateEvent = () => {
                   >
                     Upload Event Thumbnail
                   </label>
-                  
+
                   <Input
                     onChange={ImageUpload}
                     id="picture"
@@ -323,16 +324,17 @@ const CreateEvent = () => {
               }
               onClick={submitEvent}
               style={{
-                backgroundColor: `${!eventImage ||
-                    !title ||
-                    !description ||
-                    !date ||
-                    !title ||
-                    !eventCost ||
-                    !ticketLimit
+                backgroundColor: `${
+                  !eventImage ||
+                  !title ||
+                  !description ||
+                  !date ||
+                  !title ||
+                  !eventCost ||
+                  !ticketLimit
                     ? "rgba(51, 53, 55, 0.6)"
                     : "rgb(51, 53, 55)"
-                  }`,
+                }`,
                 width: "100%",
                 borderRadius: "10px",
                 color: "#ffffff",
@@ -350,4 +352,4 @@ const CreateEvent = () => {
     </div>
   );
 };
-export default dynamic (() => Promise.resolve(CreateEvent), {ssr: false})
+export default dynamic(() => Promise.resolve(CreateEvent), { ssr: false });

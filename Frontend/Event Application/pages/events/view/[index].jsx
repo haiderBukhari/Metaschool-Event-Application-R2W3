@@ -3,12 +3,28 @@ import {useRouter} from "next/router"
 import sameplepic from "../../../public/sample-picture.jpg";
 import Image from 'next/image';
 import AlertDialog from "components/ui/EmailDialog";
+import axios from "axios"
 
 const eventDetail = () => {
     const router = useRouter();
     const eventId = router.query.index;
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
+
+    const sendConfirmationEmail = () => {
+        axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/send-email`, {
+            email: email,
+            name : "", 
+            eventName: "", 
+            date: "", 
+            time: "", 
+            meetingUrl: ""
+        }).then(()=>{
+            alert("Email sent successfully")
+        }).catch((err) => {
+            alert("Error in sending Email")
+        })
+    }
     return(
         <div>
             <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5 mt-10">

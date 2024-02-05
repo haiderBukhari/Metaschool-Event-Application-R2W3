@@ -9,39 +9,40 @@ const TimeLine = () => {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [allEvents, setAllEvents] = useState([]);
-
+  const [fetchData, setFetchData] = useState(true)
   // contract information
   const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
 
   useEffect(() => {
-    const updateEthers = async () => {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      setProvider(provider);
+    if (fetchData) {
+      const updateEthers = async () => {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        setProvider(provider);
+        const signer = await provider.getSigner();
+        setSigner(signer);
 
-      const signer = await provider.getSigner();
-      setSigner(signer);
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        setContract(contract);
 
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      setContract(contract);
+        await getAllEvents(contract);
+      };
 
-      await getAllEvents();
-    };
-
-    const getAllEvents = async () => {
-      try {
-        const data = await contract.getAllEvents();
-        setAllEvents(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    updateEthers();
-  }, [contract]);
+      const getAllEvents = async (currentContract) => {
+        try {
+          const data = await currentContract.getAllEvents();
+          setAllEvents(data);
+          setFetchData(false);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      updateEthers();
+    }
+  }, [fetchData]);
 
   const events = [
     {

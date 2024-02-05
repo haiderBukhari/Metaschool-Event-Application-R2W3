@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import contractABI from "../../../artifacts/contractABI.json";
 import { ethers } from "ethers";
+import dynamic from "next/dynamic";
 
 const CreateEvent = () => {
   const [address, setAddress] = useState(
@@ -61,7 +62,6 @@ const CreateEvent = () => {
         meetUrl,
         ticketLimit,
       };
-      console.log(data);
 
       axios
         .post(
@@ -76,31 +76,33 @@ const CreateEvent = () => {
             },
           }
         )
-        .then((res) => {
+        .then(async (res) => {
           data.eventImage = res.data.data.shortenedString; //Here it is updating the image string just a sequence of string witj 10 characters in it... like 1as82jjdj8
+          data.eventCost *= 1;
+          data.ticketLimit *= 1;
+          // Ensure the wallet is connected
+          if (!address) {
+            console.error("Wallet not connected");
+            return;
+          }
+          const tx = await contract.createEvent(
+            data.title,
+            data.description,
+            data.eventImage,
+            data.date,
+            data.time,
+            data.eventCost,
+            data.meetUrl,
+            data.ticketLimit
+          );
+
+          await tx.wait();
+          alert("Event creation successful");
         })
         .catch((err) => {
           console.log(err);
         });
 
-      // Ensure the wallet is connected
-      if (!address) {
-        console.error("Wallet not connected");
-        return;
-      }
-
-      const tx = await contract.createEvent(
-        data.title,
-        data.description,
-        data.eventImage,
-        data.date,
-        data.time,
-        data.eventCost,
-        data.meetUrl,
-        data.ticketLimit
-      );
-      await tx.wait();
-      alert("Event creation successful");
     } catch (err) {
       console.error(err);
     }
@@ -160,16 +162,16 @@ const CreateEvent = () => {
       className="max-w-screen min-h-screen py-10 overflow-hidden"
       style={{ backgroundColor: "#f4f5f6" }}
     >
-      <div className="max-w-2xl mx-auto space-y-3 sm:text-center mb-5">
-        <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
+      <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5">
+        <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl text-center mx-3">
           Unleash Extraordinary Events
         </h2>
-        <p>
+        <p className="text-center mx-3">
           Empowering You to Craft Unforgettable Events, Every Step of the Way
         </p>
       </div>
 
-      <div className="rounded-lg shadow-md min-h-[600px] max-w-[800px] m-auto p-5 flex flex-row flex-wrap justify-between bg-white">
+      <div className="rounded-lg shadow-md min-h-[600px] max-w-[800px] m-auto p-5 flex flex-row flex-wrap justify-center md:justify-between bg-white">
         <div className="max-w-[400px] w-[100%] mr-3 mb-5">
           <div
             style={{
@@ -178,7 +180,7 @@ const CreateEvent = () => {
               maxWidth: "250px",
               textAlign: "center",
               padding: "8px",
-              margin: "20px 0",
+              margin: "20px auto",
             }}
           >
             <span className="font-bold mr-2">Address: </span>{" "}
@@ -220,7 +222,7 @@ const CreateEvent = () => {
           </div>
           <Tiptap description={description} setDescription={setDescription} />
         </div>
-        <div className="max-w-[300px] h-[100%] relative flex justify-center">
+        <div className="max-w-[300px] w-[100%] h-[100%] min-h-[600px] relative flex justify-center items-center">
           <div className="">
             {!eventImage ? (
               <>
@@ -238,6 +240,7 @@ const CreateEvent = () => {
                   >
                     Upload Event Thumbnail
                   </label>
+                  
                   <Input
                     onChange={ImageUpload}
                     id="picture"
@@ -320,17 +323,16 @@ const CreateEvent = () => {
               }
               onClick={submitEvent}
               style={{
-                backgroundColor: `${
-                  !eventImage ||
-                  !title ||
-                  !description ||
-                  !date ||
-                  !title ||
-                  !eventCost ||
-                  !ticketLimit
+                backgroundColor: `${!eventImage ||
+                    !title ||
+                    !description ||
+                    !date ||
+                    !title ||
+                    !eventCost ||
+                    !ticketLimit
                     ? "rgba(51, 53, 55, 0.6)"
                     : "rgb(51, 53, 55)"
-                }`,
+                  }`,
                 width: "100%",
                 borderRadius: "10px",
                 color: "#ffffff",
@@ -348,5 +350,4 @@ const CreateEvent = () => {
     </div>
   );
 };
-
-export default CreateEvent;
+export default dynamic (() => Promise.resolve(CreateEvent), {ssr: false})

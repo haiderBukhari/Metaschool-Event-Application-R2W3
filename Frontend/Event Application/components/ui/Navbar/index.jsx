@@ -1,10 +1,11 @@
-import Link from 'next/link'
+// Import necessary components and modules
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Brand from '../Brand'
 import NavLink from '../NavLink'
 import { useSelector, useDispatch } from "react-redux"
 import { removeUser } from 'components/GolabalReducers/Features/UserCredentials'
+import dynamic from "next/dynamic";
 
 const Navbar = () => {
     const [state, setState] = useState(false)
@@ -37,7 +38,10 @@ const Navbar = () => {
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
                         <Brand />
                         <div className="md:hidden">
-                            <button role="button" aria-label="Open the menu" className="text-gray-500 hover:text-gray-800"
+                            <button
+                                role="button"
+                                aria-label="Open the menu"
+                                className="text-gray-500 hover:text-gray-800"
                                 onClick={handleNavMenu}
                             >
                                 {
@@ -57,47 +61,47 @@ const Navbar = () => {
                     <div className={`flex-1 pb-3 mt-8 md:pb-0 md:mt-0 md:block ${state ? "" : "hidden"}`}>
                         <ul className="text-gray-700 justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 md:text-gray-600 md:font-medium">
                             {
-                                navigation.map((item, idx) => {
-                                    return (
-                                        <li key={idx} className="duration-150 hover:text-gray-900">
-                                            <Link
-                                                href={item.path}
-                                                className="block"
-                                            >
-                                                {item.title}
-                                            </Link>
-                                        </li>
-                                    )
-                                })
+                                navigation.map((item, idx) => (
+                                    <li key={idx} className="duration-150 hover:text-gray-900">
+                                        <NavLink className="block" href={item.path}>
+                                            {item.title}
+                                        </NavLink>
+                                    </li>
+                                ))
                             }
                             {
-                                useSelector(state => state.userCredentials).address && <li className="duration-150 hover:text-gray-900">
-                                    <Link
-                                        href='/dashboard'
-                                        className="block"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                </li>
+                                useSelector(state => state.userCredentials).address && (
+                                    <li className="duration-150 hover:text-gray-900">
+                                        <NavLink className="block" href='/dashboard'>
+                                            Dashboard
+                                        </NavLink>
+                                    </li>
+                                )
                             }
-                            <li>
-                                {
-                                    useSelector(state => state.userCredentials).address ? (<NavLink
-                                        onClick={() => {
-                                            dispatch(removeUser());
-                                        }}
-                                        href="/"
-                                        className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
-                                    >
-                                        Logout
-                                    </NavLink>) : (<NavLink
-                                        href="/login"
-                                        className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
-                                    >
-                                        Login
-                                    </NavLink>)
-                                }
-                            </li>
+                            {
+                                useSelector(state => state.userCredentials).address ? (
+                                    <li>
+                                        <NavLink
+                                            onClick={() => {
+                                                dispatch(removeUser());
+                                            }}
+                                            href="/"
+                                            className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                                        >
+                                            Logout
+                                        </NavLink>
+                                    </li>
+                                ) : (
+                                    <li>
+                                        <NavLink
+                                            href="/login"
+                                            className="py-2 px-3 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                                        >
+                                            Login
+                                        </NavLink>
+                                    </li>
+                                )
+                            }
                         </ul>
                     </div>
                 </div>
@@ -106,4 +110,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default dynamic (() => Promise.resolve(Navbar), {ssr: false})

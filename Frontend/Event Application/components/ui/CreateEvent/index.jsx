@@ -276,7 +276,7 @@ const CreateEvent = () => {
               </div>
             )}
             <div className="flex justify-center items-center mt-5">
-              <label className="mr-2 "> Ticket Fee (eth): </label>
+              <label className="mr-2 "> Ticket Fee: </label>
               <input
                 onChange={(e) => {
                   setEventCost(e.target.value);
@@ -284,7 +284,7 @@ const CreateEvent = () => {
                 style={{ border: "1px solid #ccc" }}
                 className="w-[100%] p-2 flex-1"
                 type="number"
-                placeholder="cost"
+                placeholder="cost (eth)"
               />
             </div>
             <div className="flex justify-center items-center mt-5">

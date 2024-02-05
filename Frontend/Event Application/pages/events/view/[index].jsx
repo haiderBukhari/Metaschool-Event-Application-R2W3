@@ -18,7 +18,7 @@ const eventDetail = () => {
   const [event, setEvent] = useState({});
 
   // contract information
-  const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
+  const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
   useEffect(() => {
     if (router.isReady) {

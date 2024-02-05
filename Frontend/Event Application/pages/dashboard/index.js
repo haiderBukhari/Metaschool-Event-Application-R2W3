@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [allEvents, setAllEvents] = useState([]);
   const [fetchData, setFetchData] = useState(true);
   // contract information
-  const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
+  const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
   useEffect(() => {
     if (fetchData) {
@@ -37,12 +37,6 @@ const Dashboard = () => {
         setContract(contract);
         await getAllEvents(contract);
       };
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
       const getEventImage = async (shortendString) => {
         try {
           const res = await axios.get(

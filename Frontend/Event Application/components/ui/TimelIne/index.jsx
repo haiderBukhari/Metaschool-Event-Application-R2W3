@@ -3,7 +3,7 @@ import Image from "next/image";
 import sameplepic from "../../../public/eventsbackground.png";
 import { ethers } from "ethers";
 import contractABI from "../../../artifacts/contractABI.json";
-import axios from "axios"
+import axios from "axios";
 
 const TimeLine = () => {
   const [signer, setSigner] = useState(null);
@@ -12,7 +12,7 @@ const TimeLine = () => {
   const [allEvents, setAllEvents] = useState([]);
   const [fetchData, setFetchData] = useState(true);
   // contract information
-  const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
+  const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
   useEffect(() => {
     if (fetchData) {
@@ -33,12 +33,15 @@ const TimeLine = () => {
 
       const getEventImage = async (shortendString, idx) => {
         try {
-          const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          });
+          const res = await axios.get(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          );
           return res.data.data[0].actualString;
         } catch (err) {
           console.log(err);

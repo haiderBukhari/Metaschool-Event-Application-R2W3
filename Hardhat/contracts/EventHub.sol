@@ -20,7 +20,6 @@ contract EventHub {
     Event[] public allEvents;
 
     // track events by creator
-    mapping (address => Event[]) public eventsByAddress;
 
     // create an event
     function createEvent(string memory _title, string memory _description, string memory _eventImage, string memory _date, string memory _time, uint _eventCost, string memory _meetUrl, uint _ticketLimit) public {
@@ -29,7 +28,6 @@ contract EventHub {
 
         // push the event
         allEvents.push(newEvent);
-        eventsByAddress[msg.sender].push(newEvent);
     } 
 
     // get all events
@@ -43,7 +41,6 @@ contract EventHub {
 
         // get the event
         Event storage selectedEvent = allEvents[_idx];
-        Event storage eventByAddress = eventsByAddress[_owner][_idx];
 
         // // check for ticket availability
         require(selectedEvent.members.length < selectedEvent.ticketLimit, "Not enough seats available.");
@@ -55,7 +52,6 @@ contract EventHub {
 
         // push the participant after successful payment
         selectedEvent.members.push(msg.sender);
-        eventByAddress.members.push(msg.sender);
     }
 
     // modifiers

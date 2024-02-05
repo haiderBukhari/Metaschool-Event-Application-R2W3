@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import sameplepic from "../../../public/sample-picture.jpg";
+import sameplepic from "../../../public/eventsbackground.png";
 import { ethers } from "ethers";
 import contractABI from "../../../artifacts/contractABI.json";
+import axios from "axios"
 
 const TimeLine = () => {
   const [signer, setSigner] = useState(null);
@@ -30,11 +31,39 @@ const TimeLine = () => {
         await getAllEvents(contract);
       };
 
+      const getEventImage = async (shortendString, idx) => {
+        try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          });
+          return res.data.data[0].actualString;
+        } catch (err) {
+          console.log(err);
+          return "/eventsbackground.png"; // or handle the error condition as needed
+        }
+      };
+
       const getAllEvents = async (currentContract) => {
         try {
           let data = await currentContract.getAllEvents();
-          // Create a new object with the same properties as data[0]
-          setAllEvents(data);
+          const FinalData = await Promise.all(
+            data.map(async (Item, idx) => {
+              return {
+                date: Item.date,
+                time: Item.time,
+                title: Item.title,
+                description: Item.description,
+                eventImage: await getEventImage(Item.eventImage, idx),
+                meetUrl: Item.meetUrl,
+                ticketLimit: Item.ticketLimit,
+                convertedCost: Item.convertedCost,
+              };
+            })
+          );
+          setAllEvents(FinalData);
           setFetchData(false);
         } catch (err) {
           console.log(err);
@@ -50,7 +79,7 @@ const TimeLine = () => {
         <h3 className="head">Upcomming Events</h3>
         <div className="container">
           <ul>
-            {allEvents.map((item, _idx) => (
+            {allEvents?.map((item, _idx) => (
               <li key={_idx} className="relative">
                 <span className="date">{item.date}</span>
                 <span className="circle"></span>

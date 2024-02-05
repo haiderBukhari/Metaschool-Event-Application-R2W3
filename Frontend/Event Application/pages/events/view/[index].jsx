@@ -114,7 +114,7 @@ const eventDetail = () => {
           </div>
         </div>
         <Image
-          // src={event.eventImage}
+          //   src={event.eventImage}
           width={400} // Adjust the width as needed
           height={300}
           className="max-w-[400px] w-[100%] h-auto mt-4 rounded-lg"

@@ -58,6 +58,19 @@ const eventDetail = () => {
       updateEthers();
     }
   }, [fetchData, eventId]);
+
+  const registerForEvent = async (currentContract) => {
+    try {
+      const eventId = router.query.index;
+      let data = await currentContract.allEvents(eventId);
+      // Create a new object with the same properties as data[0]
+      setEvent(data);
+      setFetchData(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5 mt-10">
@@ -74,7 +87,7 @@ const eventDetail = () => {
           className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition flex justify-center w-[170px] cursor-pointer"
         >
           {" "}
-          Join for {Number(event.eventCost)} eth
+          Join for {Number(event.eventCost) / 10 ** 18} eth
         </div>
       </div>
       <div className="flex justify-center m-auto mt-7 flex-wrap">

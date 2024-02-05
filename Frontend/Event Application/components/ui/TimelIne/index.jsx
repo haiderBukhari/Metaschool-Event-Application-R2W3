@@ -9,7 +9,7 @@ const TimeLine = () => {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [allEvents, setAllEvents] = useState([]);
-  const [fetchData, setFetchData] = useState(true)
+  const [fetchData, setFetchData] = useState(true);
   // contract information
   const contractAddress = "0xd1AD17276D587827eE3170263b84fe494a6FeB99";
 

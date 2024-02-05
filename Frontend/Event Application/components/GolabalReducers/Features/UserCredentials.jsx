@@ -16,7 +16,7 @@ const getUserStateFromLocalStorage = () => {
         availableBalance: 0
       };
   };
-  
+
 
 export const userSlice = createSlice({
   name: "user",

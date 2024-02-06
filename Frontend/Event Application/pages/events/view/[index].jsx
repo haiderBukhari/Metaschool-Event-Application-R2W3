@@ -71,8 +71,8 @@ const eventDetail = () => {
       );
       await tx.wait();
     } catch (err) {
-      alert("The organizer cannot register to the event.");
-      console.log(err);
+      alert(err.message);
+      console.error(err);
     }
   };
 

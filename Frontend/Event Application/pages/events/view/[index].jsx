@@ -7,6 +7,8 @@ import { ethers } from "ethers";
 import axios from 'axios'
 import dynamic from "next/dynamic";
 import { FailedToast, SuccessToast } from "@/utils/toast";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const eventDetail = () => {
   const router = useRouter();
@@ -19,7 +21,7 @@ const eventDetail = () => {
   const [contract, setContract] = useState(null);
   const [fetchData, setFetchData] = useState(true);
   const [event, setEvent] = useState({});
-
+  const [loader, setLoader] = useState(true);
   // contract information
   const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
@@ -42,12 +44,12 @@ const eventDetail = () => {
           contractAddress,
           contractABI,
           signer
-        );
-        setContract(contract);
-        await getEvent(contract);
-      };
-
-      const getEventImage = async (shortendString) => {
+          );
+          setContract(contract);
+          await getEvent(contract);
+        };
+        
+        const getEventImage = async (shortendString) => {
         try {
           const res = await axios.get(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`,
@@ -82,6 +84,7 @@ const eventDetail = () => {
           };
           FinalData.eventImage = await getEventImage(data.eventImage);
           setEvent(FinalData);
+          setLoader(false);
           setFetchData(false);
         } catch (err) {
           console.log(err);
@@ -130,7 +133,15 @@ const eventDetail = () => {
 
   return (
     <div>
-      <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5 mt-10">
+      {
+      loader &&
+        <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", margin: "auto" }} className="min-h-screen">
+          <CircularProgress />
+        </Box>
+      }
+      {
+        !loader && <>
+        <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5 mt-10">
         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl text-center mx-3 underline underline-offset-8 mb-5">
           {event.title}
         </h2>
@@ -177,6 +188,8 @@ const eventDetail = () => {
           alt=""
         />
       </div>
+        </>
+      }
       <AlertDialog
         open={open}
         setOpen={setOpen}

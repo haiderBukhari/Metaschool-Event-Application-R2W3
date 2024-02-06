@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import OrganizedEvents from "components/ui/OrganizedEvents";
-import image from "../../public/sample-picture.jpg";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import contractABI from "../../artifacts/contractABI.json";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Dashboard = () => {
   const [address, setAddress] = useState(
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [contract, setContract] = useState(null);
   const [allEvents, setAllEvents] = useState([]);
   const [fetchData, setFetchData] = useState(true);
+  const [loader, setLoader] = useState(true);
   // contract information
   const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
@@ -75,6 +77,7 @@ const Dashboard = () => {
           );
           setAllEvents(FinalData);
           setFetchData(false);
+          setLoader(false);
         } catch (err) {
           console.log(err);
         }
@@ -118,6 +121,12 @@ const Dashboard = () => {
         </h2>
         <hr style={{ width: "200px", margin: "10px auto", padding: "2px" }} />
       </div>
+      {
+      loader &&
+        <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", margin: "auto" }}>
+          <CircularProgress />
+        </Box>
+      }
       <div className="max-w-[1000px] m-auto flex justify-center items-center flex-wrap">
        <div className="mt-12">
        <ul style={{display: "flex"}} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 justify-center items-center m-auto flex">

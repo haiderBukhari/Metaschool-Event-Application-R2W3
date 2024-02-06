@@ -89,6 +89,7 @@ const Navbar = () => {
                                             }}
                                             href="/"
                                             className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition flex justify-center w-[100px] m-auto md:block sm:m-0"
+                                            style={{borderRadius: "30px"}}
                                         >
                                             Logout
                                         </NavLink>
@@ -98,6 +99,7 @@ const Navbar = () => {
                                         <NavLink
                                             href="/login"
                                             className="py-2 px-3 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition"
+                                            style={{borderRadius: "30px"}}
                                         >
                                             Login
                                         </NavLink>

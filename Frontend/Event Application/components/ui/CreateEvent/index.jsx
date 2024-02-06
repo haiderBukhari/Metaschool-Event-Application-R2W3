@@ -10,6 +10,8 @@ import contractABI from "../../../artifacts/contractABI.json";
 import { ethers } from "ethers";
 import dynamic from "next/dynamic";
 import { FailedToast, SuccessToast } from "@/utils/toast";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const CreateEvent = () => {
   const [address, setAddress] = useState(
@@ -27,6 +29,7 @@ const CreateEvent = () => {
   const [signer, setSigner] = useState(null);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (!address.address) {
@@ -50,6 +53,7 @@ const CreateEvent = () => {
   };
 
   const submitEvent = async () => {
+    setLoader(true);
     try {
       let convertedCost = (parseFloat(eventCost) * (1 * 10 ** 18)).toString();
       const data = {
@@ -83,7 +87,8 @@ const CreateEvent = () => {
           data.ticketLimit *= 1;
           // Ensure the wallet is connected
           if (!address) {
-            console.error("Wallet not connected");
+            FailedToast("Wallet not connected");
+            setLoader(false);
             return;
           }
           const tx = await contract.createEvent(
@@ -100,12 +105,15 @@ const CreateEvent = () => {
           await tx.wait();
           SuccessToast("Event Created Successfully")
           Navigate.push('/events/view')
+          setLoader(false);
         })
         .catch((err) => {
           FailedToast(err.message)
+          setLoader(false);
         });
       } catch (err) {
         FailedToast(err.message)
+        setLoader(false);
     }
   };
 
@@ -171,7 +179,12 @@ const CreateEvent = () => {
           Empowering You to Craft Unforgettable Events, Every Step of the Way
         </p>
       </div>
-
+      {
+      loader &&
+        <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", margin: "auto" }}>
+          <CircularProgress />
+        </Box>
+      }
       <div className="rounded-lg shadow-md min-h-[600px] max-w-[800px] m-auto p-5 flex flex-row flex-wrap justify-center md:justify-between bg-white">
         <div className="max-w-[400px] w-[100%] mr-3 mb-5">
           <div

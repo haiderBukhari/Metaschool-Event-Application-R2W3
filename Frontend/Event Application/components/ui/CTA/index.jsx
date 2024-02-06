@@ -21,6 +21,7 @@ const CTA = () => {
                         <NavLink
                             href="/events/view"
                             className="inline-block mt-4 font-medium text-white bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition rounded-3xl text-bold text-base"
+                            style={{borderRadius: "30px"}}
                         >
                             Attend Ongoing Events
                         </NavLink>

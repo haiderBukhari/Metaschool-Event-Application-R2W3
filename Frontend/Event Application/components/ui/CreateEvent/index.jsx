@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Input from "../Input";
-import eventsbackground from "../../../public/eventsbackground.png";
-// import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Tiptap from "./Tiptap";
 import { X, MoveRight } from "lucide-react";
@@ -165,7 +163,7 @@ const CreateEvent = () => {
     >
       <div className="max-w-2xl mx-auto space-y-3 sm:text-center m-auto mb-5">
         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl text-center mx-3">
-          Unleash Extraordinary Events
+          Create Extraordinary Events
         </h2>
         <p className="text-center mx-3">
           Empowering You to Craft Unforgettable Events, Every Step of the Way
@@ -192,7 +190,7 @@ const CreateEvent = () => {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-            className="font-bold text-xl text-gray-500"
+            className="font-bold text-lg"
             style={{ border: "1px solid #ccc" }}
             placeholder="Event Name"
             type="text"
@@ -223,20 +221,21 @@ const CreateEvent = () => {
           </div>
           <Tiptap description={description} setDescription={setDescription} />
         </div>
-        <div className="max-w-[300px] w-[100%] h-[100%] min-h-[600px] relative flex justify-center items-center">
+        <div className="max-w-[300px] w-[auto] h-[100%] min-h-[600px] relative flex justify-center items-center">
           <div className="">
             {!eventImage ? (
               <>
                 <img
                   src="/eventsbackground.png"
-                  className="rounded-lg"
+                  className="rounded-lg max-w[100%] max-w-[100%] w-[auto] sm:max-w-[300px]"
                   alt="events-background"
-                  height={100} // Set the height property for the default image
-                  width={300} // Set the width property for the default image
+                  style={{height: "auto", margin: "0 10px"}}
+                  // height={100} // Set the height property for the default image
+                  // width={400} // Set the width property for the default image
                 />
-                <div className="grid w-full max-w-sm items-center gap-1.5 pt-2">
+                <div className="m-auto grid w-full max-w-sm items-center gap-1.5 pt-2">
                   <label
-                    className="font-bold font-serif text-xl"
+                    className="font-bold text-lg font-sans mt-2"
                     htmlFor="picture"
                   >
                     Upload Event Thumbnail
@@ -301,7 +300,7 @@ const CreateEvent = () => {
               />
             </div>
             <div className="flex justify-center items-center mt-5">
-              <label className="mr-2 "> Meeting Link: </label>
+              <label className="mr-2 "> Meet Link: </label>
               <input
                 onChange={(e) => {
                   setMeetUrl(e.target.value);
@@ -309,7 +308,7 @@ const CreateEvent = () => {
                 style={{ border: "1px solid #ccc" }}
                 className="w-[100%] p-2 flex-1"
                 type="text"
-                placeholder="meeting url"
+                placeholder="Meeting url"
               />
             </div>
             <Button

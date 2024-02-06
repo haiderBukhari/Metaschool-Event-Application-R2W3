@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "components/GolabalReducers/Features/UserCredentials";
 import { useRouter } from "next/router";
 import contractABI from "../../../artifacts/contractABI.json";
+import { FailedToast, SuccessToast } from "@/utils/toast";
 
 const Login = () => {
   const [walletAddress, setWalletAddress] = useState(null);
@@ -26,12 +27,13 @@ const Login = () => {
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
           changeAccount(result[0]);
+          SuccessToast("Logined Successfully")
         })
         .catch((error) => {
-          console.error(error.message);
+          FailedToast(error.message)
         });
     } else {
-      console.log("Need to install MetaMask");
+      FailedToast("Need to install MetaMask")
     }
   };
 

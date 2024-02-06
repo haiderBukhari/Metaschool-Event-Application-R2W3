@@ -119,6 +119,8 @@ const Dashboard = () => {
         <hr style={{ width: "200px", margin: "10px auto", padding: "2px" }} />
       </div>
       <div className="max-w-[1000px] m-auto flex justify-center items-center flex-wrap">
+       <div className="mt-12">
+       <ul style={{display: "flex"}} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 justify-center items-center m-auto flex">
         {allEvents
           .filter(
             (items) => items.eventOwner.toLowerCase() === address?.address
@@ -130,6 +132,8 @@ const Dashboard = () => {
               key={_idx}
             />
           ))}
+              </ul>
+</div>
       </div>{" "}
     </>
   );

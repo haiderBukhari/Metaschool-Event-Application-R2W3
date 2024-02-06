@@ -59,14 +59,19 @@ const eventDetail = () => {
     }
   }, [fetchData, eventId]);
 
-  const registerForEvent = async (currentContract) => {
+  const registerForEvent = async () => {
     try {
       const eventId = router.query.index;
-      let data = await currentContract.allEvents(eventId);
-      // Create a new object with the same properties as data[0]
-      setEvent(data);
-      setFetchData(false);
+      const updatedCost = ethers.formatUnits(event.eventCost, 18);
+      let tx = await contract.registerForEvent(
+        event.eventOwner,
+        event.eventCost,
+        eventId,
+        { value: ethers.parseEther(updatedCost) } // for ethers js v6
+      );
+      await tx.wait();
     } catch (err) {
+      alert("The organizer cannot register to the event.");
       console.log(err);
     }
   };
@@ -82,7 +87,8 @@ const eventDetail = () => {
       <div className="flex justify-center">
         <div
           onClick={() => {
-            setOpen(true);
+            registerForEvent();
+            // setOpen(true);
           }}
           className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition flex justify-center w-[170px] cursor-pointer"
         >

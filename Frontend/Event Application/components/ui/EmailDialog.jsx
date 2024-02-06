@@ -6,7 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Input from './Input';
-export default function AlertDialog({open, setOpen, email, setEmail}) {
+
+export default function AlertDialog({open, setOpen, email, setEmail, name, setName, eventHeading, registerForEvent}) {
 
   const handleClose = () => {
     setOpen(false);
@@ -21,14 +22,18 @@ export default function AlertDialog({open, setOpen, email, setEmail}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Please Enter your Email Address to recieve meeting Link in your inbox"}
+          {`Please Enter your Email Address to Register for ${eventHeading} Event.`}
         </DialogTitle>
         <DialogContent>
-          <Input type="email" placeholder="Email Address"/>
+          <Input onChange={(e)=>{setEmail(e.target.value)}} style={{border: "1px solid #aaa"}} type="email" placeholder="Email Address" value={email}/>
+          <Input className="mt-3" style={{border: "1px solid #aaa"}} onChange={(e)=>{setName(e.target.value)}} type="name" placeholder="Name" value={name}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button style={{padding: "4px 10px", backgroundColor: "rgba(0, 0, 100, 0.8)", color: "#fff"}} onClick={handleClose}>Close</Button>
+          <Button disabled={!email.includes('@') || name.length<2} style={{padding: "4px 10px", backgroundColor: `${(email.includes('@') && name.length>2) ? "rgba(0, 0, 100, 0.8)": "rgba(0, 0, 100, 0.5)"}`, color: "#fff"}} onClick={() => {
+            handleClose();
+            registerForEvent();
+          }} autoFocus>
             Submit
           </Button>
         </DialogActions>

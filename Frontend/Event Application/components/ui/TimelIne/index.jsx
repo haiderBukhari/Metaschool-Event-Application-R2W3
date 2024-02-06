@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import sameplepic from "../../../public/eventsbackground.png";
 import { ethers } from "ethers";
 import contractABI from "../../../artifacts/contractABI.json";
 import axios from "axios";
+import { useRouter } from "next/router"
 
 const TimeLine = () => {
   const [signer, setSigner] = useState(null);
@@ -12,26 +12,33 @@ const TimeLine = () => {
   const [allEvents, setAllEvents] = useState([]);
   const [fetchData, setFetchData] = useState(true);
   // contract information
+  const Navigate = useRouter();
   const contractAddress = "0xB67B982508fBA0DcD296256c90de7173956F4db1";
 
   useEffect(() => {
     if (fetchData) {
       const updateEthers = async () => {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        setProvider(provider);
-        const signer = await provider.getSigner();
-        setSigner(signer);
+        if (window.ethereum) {
 
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-        setContract(contract);
-        await getAllEvents(contract);
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          setProvider(provider);
+          const signer = await provider.getSigner();
+          setSigner(signer);
+
+          const contract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+          setContract(contract);
+          await getAllEvents(contract);
+        } else {
+          alert("Wallet not connected")
+          Navigate.push('/login')
+        }
       };
 
-      const getEventImage = async (shortendString, idx) => {
+      const getEventImage = async (shortendString) => {
         try {
           const res = await axios.get(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`,
@@ -59,7 +66,7 @@ const TimeLine = () => {
                 time: Item.time,
                 title: Item.title,
                 description: Item.description,
-                eventImage: await getEventImage(Item.eventImage, idx),
+                eventImage: await getEventImage(Item.eventImage),
                 meetUrl: Item.meetUrl,
                 ticketLimit: Item.ticketLimit,
                 convertedCost: Item.convertedCost,

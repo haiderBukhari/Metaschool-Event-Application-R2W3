@@ -8,6 +8,8 @@ import LogoGrid from "../components/ui/LogoGrid";
 import Testimonials from "../components/ui/Testimonials";
 import ToolKit from "../components/ui/ToolKit";
 import AnimatedContent from "../components/ui/AnimatedContent";
+import SwiperComponent from "../components/ui/Swipper";
+import Benefits from "components/ui/Benefits"
 
 export default function Home() {
   return (
@@ -23,6 +25,8 @@ export default function Home() {
         <CTA />
       </GradientWrapper>
       <ToolKit />
+      <SwiperComponent/>
+      <Benefits/>
       <GradientWrapper>
         <Testimonials />
       </GradientWrapper>

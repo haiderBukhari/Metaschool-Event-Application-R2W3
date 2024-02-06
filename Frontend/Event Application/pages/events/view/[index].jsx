@@ -5,12 +5,15 @@ import Image from "next/image";
 import AlertDialog from "components/ui/EmailDialog";
 import contractABI from "../../../artifacts/contractABI.json";
 import { ethers } from "ethers";
+import axios from 'axios'
+import dynamic from "next/dynamic";
 
 const eventDetail = () => {
   const router = useRouter();
   const [eventId, setEventID] = useState(null);
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [contract, setContract] = useState(null);
@@ -44,12 +47,42 @@ const eventDetail = () => {
         await getEvent(contract);
       };
 
+      const getEventImage = async (shortendString) => {
+        try {
+          const res = await axios.get(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/url/${shortendString}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          );
+          return res.data.data[0].actualString;
+        } catch (err) {
+          console.log(err);
+          return "/eventsbackground.png"; // or handle the error condition as needed
+        }
+      };
+
       const getEvent = async (currentContract) => {
         try {
           const eventId = router.query.index;
           let data = await currentContract.allEvents(eventId);
           // Create a new object with the same properties as data[0]
-          setEvent(data);
+          const FinalData = {
+            date: data.date,
+            time: data.time,
+            title: data.title,
+            description: data.description,
+            meetUrl: data.meetUrl,
+            ticketLimit: data.ticketLimit,
+            eventCost: data.eventCost,
+            eventOwner: data.eventOwner
+          };
+          console.log(FinalData)
+          FinalData.eventImage = await getEventImage(data.eventImage);
+          setEvent(FinalData);
           setFetchData(false);
         } catch (err) {
           console.log(err);
@@ -61,18 +94,38 @@ const eventDetail = () => {
 
   const registerForEvent = async () => {
     try {
-      const eventId = router.query.index;
-      const updatedCost = ethers.formatUnits(event.eventCost, 18);
-      let tx = await contract.registerForEvent(
-        event.eventOwner,
-        event.eventCost,
-        eventId,
-        { value: ethers.parseEther(updatedCost) } // for ethers js v6
-      );
-      await tx.wait();
+      // const eventId = router.query.index;
+      // const updatedCost = ethers.formatUnits(event.eventCost, 18);
+      // let tx = await contract.registerForEvent(
+      //   event.eventOwner,
+      //   event.eventCost,
+      //   eventId,
+      //   { value: ethers.parseEther(updatedCost) }
+      // );
+      // await tx.wait();
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/send-email`,
+          {
+            email: email,
+            name: name,
+            eventName: event.title,
+            date: event.date,
+            time: event.time,
+            meetingUrl: event.meetUrl
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        ).then(()=> {
+          alert("Registered Successfully");
+        })
     } catch (err) {
-      alert(err.message);
-      console.error(err);
+      alert("Error in registering");
+      // console.error(err);
     }
   };
 
@@ -82,13 +135,12 @@ const eventDetail = () => {
         <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl text-center mx-3 underline underline-offset-8 mb-5">
           {event.title}
         </h2>
-        <p className="text-center mx-3 mt-10">{event.description}</p>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-10">
         <div
           onClick={() => {
-            registerForEvent();
-            // setOpen(true);
+            setOpen(true);
+            // registerForEvent();
           }}
           className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition flex justify-center w-[170px] cursor-pointer"
         >
@@ -115,12 +167,12 @@ const eventDetail = () => {
               <span className="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mt-3">
                 Event Description:{" "}
               </span>{" "}
-              {event.description}
+              <div className="pb-7 inline-block" dangerouslySetInnerHTML={{ __html: event.description}} />
             </p>
           </div>
         </div>
         <Image
-          //   src={event.eventImage}
+          src={event.eventImage}
           width={400} // Adjust the width as needed
           height={300}
           className="max-w-[400px] w-[100%] h-auto mt-4 rounded-lg"
@@ -132,9 +184,13 @@ const eventDetail = () => {
         setOpen={setOpen}
         email={email}
         setEmail={setEmail}
+        name={name}
+        setName={setName}
+        eventHeading={event.title}
+        registerForEvent={registerForEvent}
       />
     </div>
   );
 };
 
-export default eventDetail;
+export default dynamic(() => Promise.resolve(eventDetail), { ssr: false });

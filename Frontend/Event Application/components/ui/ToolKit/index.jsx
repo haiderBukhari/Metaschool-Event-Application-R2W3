@@ -5,15 +5,16 @@ import nextjs from "../../../public/icons/nextjs.svg"
 import tailwind from "../../../public/icons/tailwind.svg"
 import nodejs from "../../../public/icons/nodejs.svg"
 import vercel from "../../../public/icons/vercel.svg"
-import figma from "../../../public/icons/figma.svg"
+import etherium from "../../../public/icons/ethereum.svg"
+import materialUi from "../../../public/icons/material_ui.svg"
 
 const ToolKit = () => {
 
     const features = [
         {
-            icon: wordpress,
-            title: "Wordpress",
-            desc: "WordPress is an open-source content management system (CMS)."
+            icon: etherium,
+            title: "Ethereum",
+            desc: "Ethereum is a popular blockchain platform that supports smart contracts."
         },
         {
             icon: nextjs,
@@ -27,18 +28,18 @@ const ToolKit = () => {
         },
         {
             icon: nodejs,
-            title: "Node.js",
-            desc: "Node.js is an open-source, cross-platform, back-end JavaScript runtime environment."
+            title: "Node, Express and MongoDB",
+            desc: "Node.js: Backend runtime. Express: Framework for RESTful APIs. MongoDB: Database for storing data."
         },
         {
             icon: vercel,
-            title: "Vercel",
-            desc: "Vercel is a cloud platform that enables developers to host web apps."
+            title: "Decentralized File Storage",
+            desc: "A Distributed Protocol for Secure and Decentralized File Storage."
         },
         {
-            icon: figma,
-            title: "Figma",
-            desc: "Figma is a web-based graphics editing and user interface design app."
+            icon: materialUi,
+            title: "Material ui and Shadcn",
+            desc: "Provide interactive component to interact with."
         },
     ]
 
@@ -47,10 +48,10 @@ const ToolKit = () => {
             <div id="toolkit" className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="max-w-2xl mx-auto space-y-3 sm:text-center">
                     <h2 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                        Work with the best toolkit
+                    Decentralized Event Web App Toolkit
                     </h2>
                     <p>
-                        These are a few of our favourite things
+                    Discover Tools for Secure and Efficient Development.
                     </p>
                 </div>
                 <div className="mt-12">

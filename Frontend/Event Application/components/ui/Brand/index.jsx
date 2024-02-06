@@ -6,7 +6,7 @@ const Brand = () => (
             src="/logo.png"
             width={120}
             height={50}
-            alt="Blinder logo"
+            alt="EventHub logo"
         />
     </Link>
 )

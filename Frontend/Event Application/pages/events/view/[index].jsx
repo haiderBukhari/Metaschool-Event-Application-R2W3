@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import sameplepic from "../../../public/sample-picture.jpg";
 import Image from "next/image";
 import AlertDialog from "components/ui/EmailDialog";
 import contractABI from "../../../artifacts/contractABI.json";
 import { ethers } from "ethers";
 import axios from 'axios'
 import dynamic from "next/dynamic";
+import { FailedToast, SuccessToast } from "@/utils/toast";
 
 const eventDetail = () => {
   const router = useRouter();
@@ -80,7 +80,6 @@ const eventDetail = () => {
             eventCost: data.eventCost,
             eventOwner: data.eventOwner
           };
-          console.log(FinalData)
           FinalData.eventImage = await getEventImage(data.eventImage);
           setEvent(FinalData);
           setFetchData(false);
@@ -94,15 +93,15 @@ const eventDetail = () => {
 
   const registerForEvent = async () => {
     try {
-      // const eventId = router.query.index;
-      // const updatedCost = ethers.formatUnits(event.eventCost, 18);
-      // let tx = await contract.registerForEvent(
-      //   event.eventOwner,
-      //   event.eventCost,
-      //   eventId,
-      //   { value: ethers.parseEther(updatedCost) }
-      // );
-      // await tx.wait();
+      const eventId = router.query.index;
+      const updatedCost = ethers.formatUnits(event.eventCost, 18);
+      let tx = await contract.registerForEvent(
+        event.eventOwner,
+        event.eventCost,
+        eventId,
+        { value: ethers.parseEther(updatedCost) }
+      );
+      await tx.wait();
       axios
         .post(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/send-email`,
@@ -121,11 +120,11 @@ const eventDetail = () => {
             },
           }
         ).then(()=> {
-          alert("Registered Successfully");
+          SuccessToast("Registered Successfully");
+          router.push('/')
         })
     } catch (err) {
-      alert("Error in registering");
-      // console.error(err);
+      FailedToast("Error in registering")
     }
   };
 
@@ -140,7 +139,6 @@ const eventDetail = () => {
         <div
           onClick={() => {
             setOpen(true);
-            // registerForEvent();
           }}
           className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition flex justify-center w-[170px] cursor-pointer"
         >
@@ -167,7 +165,7 @@ const eventDetail = () => {
               <span className="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mt-3">
                 Event Description:{" "}
               </span>{" "}
-              <div className="pb-7 inline-block" dangerouslySetInnerHTML={{ __html: event.description}} />
+              <div className="pb-7 ml-4" dangerouslySetInnerHTML={{ __html: event.description}} />
             </p>
           </div>
         </div>

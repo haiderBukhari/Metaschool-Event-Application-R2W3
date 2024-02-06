@@ -6,6 +6,7 @@ import NavLink from '../NavLink'
 import { useSelector, useDispatch } from "react-redux"
 import { removeUser } from 'components/GolabalReducers/Features/UserCredentials'
 import dynamic from "next/dynamic";
+import { SuccessToast } from '@/utils/toast'
 
 const Navbar = () => {
     const [state, setState] = useState(false)
@@ -83,6 +84,7 @@ const Navbar = () => {
                                     <li>
                                         <NavLink
                                             onClick={() => {
+                                                SuccessToast("Loged Out Successfully")
                                                 dispatch(removeUser());
                                             }}
                                             href="/"

@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import contractABI from "../../../artifacts/contractABI.json";
 import axios from "axios";
 import { useRouter } from "next/router"
+import { FailedToast } from "@/utils/toast";
 
 const TimeLine = () => {
   const [signer, setSigner] = useState(null);
@@ -18,8 +19,7 @@ const TimeLine = () => {
   useEffect(() => {
     if (fetchData) {
       const updateEthers = async () => {
-        if (window.ethereum) {
-
+        if (window.ethereum && window.ethereum.isMetaMask) {
           const provider = new ethers.BrowserProvider(window.ethereum);
           setProvider(provider);
           const signer = await provider.getSigner();
@@ -33,7 +33,7 @@ const TimeLine = () => {
           setContract(contract);
           await getAllEvents(contract);
         } else {
-          alert("Wallet not connected")
+          FailedToast("Need to install MetaMask")
           Navigate.push('/login')
         }
       };
@@ -59,9 +59,11 @@ const TimeLine = () => {
       const getAllEvents = async (currentContract) => {
         try {
           let data = await currentContract.getAllEvents();
+          const currentDate = new Date(); 
           const FinalData = await Promise.all(
             data.map(async (Item, idx) => {
               return {
+                id: idx,
                 date: Item.date,
                 time: Item.time,
                 title: Item.title,
@@ -73,7 +75,12 @@ const TimeLine = () => {
               };
             })
           );
-          setAllEvents(FinalData);
+          const filteredData = FinalData.filter(event => {
+            const eventDate = new Date(event.date);
+            return eventDate >= currentDate; // Keep events with dates on or after the current date
+        });
+        filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));        
+          setAllEvents(filteredData);
           setFetchData(false);
         } catch (err) {
           console.log(err);
@@ -108,19 +115,12 @@ const TimeLine = () => {
                       <h3 className="heading font-bold text-xl">
                         {item.title}
                       </h3>
-                      {/* <div className="pb-7" dangerouslySetInnerHTML={{ __html: item.description }} /> */}
                       <a
-                        href={`/events/view/${_idx}`}
+                        href={`/events/view/${item.id}`}
                         className="py-2 px-4 text-center rounded-3xl duration-150 text-white text-bold text-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 mb-5 hover:from-yellow-500 hover:via-red-500 hover:to-pink-500 hover:ring ring-transparent ring-offset-2 transition mr-2 absolute bottom-3 right-2"
                       >
                         Read More
                       </a>
-                      {/* <a
-                          href={`/events/${item.eventId}`}
-                          className="absolute bottom-0 right-0 pt-5 mt-5"
-                        >
-                          Read More
-                        </a> */}
                     </div>
                   </div>
                 </div>

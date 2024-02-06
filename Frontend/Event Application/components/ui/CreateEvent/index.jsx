@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import contractABI from "../../../artifacts/contractABI.json";
 import { ethers } from "ethers";
 import dynamic from "next/dynamic";
+import { FailedToast, SuccessToast } from "@/utils/toast";
 
 const CreateEvent = () => {
   const [address, setAddress] = useState(
@@ -97,13 +98,14 @@ const CreateEvent = () => {
           );
 
           await tx.wait();
-          alert("Event creation successful");
+          SuccessToast("Event Created Successfully")
+          Navigate.push('/events/view')
         })
         .catch((err) => {
-          console.log(err);
+          FailedToast(err.message)
         });
-    } catch (err) {
-      console.error(err);
+      } catch (err) {
+        FailedToast(err.message)
     }
   };
 
